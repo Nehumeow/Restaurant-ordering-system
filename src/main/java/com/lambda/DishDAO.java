@@ -1,0 +1,1 @@
+package com.lambda;import com.lambda.Objects.Dish;import java.sql.*;public class DishDAO {    public void addDish(Dish dish) {    }}
