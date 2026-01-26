@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian Hive - Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* --- BRANDING & COLORS --- */
+        :root {
+            --brand-red: #8B2E25;
+            --brand-gold: #F4C430;
+            --bg-color: #fcfcfc;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--brand-red);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background-color: #5a1a15;
+            color: var(--brand-gold);
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 4px solid var(--brand-gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        h1 { margin: 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        p.subtitle { color: #fff; margin-top: 10px; font-size: 1.1rem; font-style: italic; }
+
+        /* LAYOUT */
+        .container {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 40px auto;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* MENU GRID */
+        .menu-section {
+            flex: 2;
+            min-width: 300px;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .menu-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--brand-gold); }
+        .dish-name { font-size: 1.2rem; font-weight: bold; color: var(--brand-red); margin-bottom: 10px; }
+        .dish-price { font-size: 1.1rem; color: #555; font-weight: bold; margin-bottom: 15px; }
+
+        .add-btn {
+            background-color: var(--brand-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .add-btn:hover { background-color: #a03026; transform: scale(1.05); }
+
+        /* CART SIDEBAR */
+        .cart-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            height: fit-content;
+            border-top: 5px solid var(--brand-gold);
+        }
+        .cart-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--brand-red);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .cart-items { max-height: 350px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+
+        /* DISCOUNT BANNER */
+        .discount-banner {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid #d6e9c6;
+            font-weight: bold;
+            display: none; /* Hidden by default, shown if discount > 0 */
+        }
+
+        /* TOTALS */
+        .total-row { display: flex; justify-content: space-between; font-size: 1.1rem; margin-bottom: 5px; color: #555; }
+        .final-row { display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold; margin-top: 15px; border-top: 2px solid #333; padding-top: 10px; color: var(--brand-red); }
+
+        #checkout-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+        }
+        #checkout-btn:hover { opacity: 0.9; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Indian Hive</h1>
+    <p class="subtitle">Authentic Taste of Växjö</p>
+</header>
+
+<div class="container">
+
+    <div class="menu-section">
+        <div class="menu-grid" id="menu-container"></div>
+    </div>
+
+    <div class="cart-section">
+        <div class="cart-header">Your Order</div>
+
+        <div class="cart-items" id="cart-items-display">
+            <p style="text-align:center; color:#999;">Cart is empty</p>
+        </div>
+
+        <div id="discount-message-box" class="discount-banner">
+            🎉 Special Offer: <span id="discount-percent-display">0</span>% OFF applied!
+        </div>
+
+        <div class="total-row">
+            <span>Subtotal:</span>
+            <span><span id="subtotal-text">0</span> SEK</span>
+        </div>
+        <div class="total-row" style="color: green;">
+            <span>Discount:</span>
+            <span>- <span id="discount-text">0</span> SEK</span>
+        </div>
+        <div class="final-row">
+            <span>Total:</span>
+            <span><span id="final-total-text">0</span> SEK</span>
+        </div>
+
+        <button id="checkout-btn" onclick="processPayment()">PAY NOW</button>
+    </div>
+
+</div>
+
+<script>
+    // --- 1. OWNER SETTINGS (CONTROL PANEL) ---
+
+    // CHANGE THIS NUMBER TO CONTROL THE DISCOUNT!
+    // Set to 0 to turn off the discount.
+    const GLOBAL_DISCOUNT_PERCENT = 20;
+
+    const menuData = [
+        { name: "Veg Biryani", price: 115 },
+        { name: "Chicken Biryani", price: 120 },
+        { name: "Beef Biryani", price: 130 },
+        { name: "Chana Masala", price: 80 },
+        { name: "Paneer Tikka Masala", price: 80 },
+        { name: "Chicken Tikka Masala", price: 85 },
+        { name: "Butter Chicken", price: 85 },
+        { name: "Chicken Chetinad", price: 85 },
+        { name: "Beef Masala", price: 90 }
+    ];
+
+    let cart = [];
+
+    // --- 2. INITIALIZE PAGE ---
+    // Show discount banner if active
+    if (GLOBAL_DISCOUNT_PERCENT > 0) {
+        document.getElementById('discount-message-box').style.display = 'block';
+        document.getElementById('discount-percent-display').innerText = GLOBAL_DISCOUNT_PERCENT;
+    }
+
+    // Render Menu
+    const menuContainer = document.getElementById('menu-container');
+    menuData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.innerHTML = `
+            <div class="dish-name">${item.name}</div>
+            <div class="dish-price">${item.price} SEK</div>
+            <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">ADD +</button>
+        `;
+        menuContainer.appendChild(card);
+    });
+
+    // --- 3. CART FUNCTIONS ---
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        renderCart();
+    }
+
+    function renderCart() {
+        const display = document.getElementById('cart-items-display');
+        if (cart.length === 0) {
+            display.innerHTML = '<p style="text-align:center; color:#999;">Cart is empty</p>';
+        } else {
+            display.innerHTML = '';
+            cart.forEach((item) => {
+                display.innerHTML += `
+                    <div class="cart-row">
+                        <span>${item.name}</span>
+                        <span>${item.price} SEK</span>
+                    </div>`;
+            });
+        }
+        calculateTotal();
+    }
+
+    // --- 4. CALCULATE TOTALS (WITH AUTOMATIC DISCOUNT) ---
+    function calculateTotal() {
+        let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+        let discountAmount = 0;
+
+        // Apply Global Discount automatically
+        if (GLOBAL_DISCOUNT_PERCENT > 0) {
+            discountAmount = Math.round((subtotal * GLOBAL_DISCOUNT_PERCENT) / 100);
+        }
+
+        let finalTotal = subtotal - discountAmount;
+
+        // Update UI
+        document.getElementById('subtotal-text').innerText = subtotal;
+        document.getElementById('discount-text').innerText = discountAmount;
+        document.getElementById('final-total-text').innerText = finalTotal;
+
+        return finalTotal;
+    }
+
+    // --- 5. CHECKOUT ---
+    function processPayment() {
+        const finalPrice = calculateTotal();
+        if (finalPrice <= 0) {
+            alert("Cart is empty!");
+            return;
+        }
+
+        fetch('/product/v1/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount: finalPrice * 100, // Convert to cents/öre
+                quantity: 1,
+                name: "Indian Hive Order (Discount Applied)",
+                currency: "SEK"
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.sessionUrl) window.location.href = data.sessionUrl;
+                else alert("Error: " + JSON.stringify(data));
+            })
+            .catch(err => console.error(err));
+    }
+</script>
+
+</body>
+</html>
