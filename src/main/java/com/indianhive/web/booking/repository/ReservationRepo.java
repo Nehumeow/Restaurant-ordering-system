@@ -1,4 +1,6 @@
 package com.indianhive.web.booking.repository;
 
-public class samplec {
+public class ReservationRepo {
+
+
 }
