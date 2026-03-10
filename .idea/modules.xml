@@ -3,9 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/IndianHive_Web.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IndianHive_Web.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Restaurant-ordering-system.iml" filepath="$PROJECT_DIR$/.idea/modules/Restaurant-ordering-system.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Restaurant-ordering-system.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Restaurant-ordering-system.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Restaurant-ordering-system.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Restaurant-ordering-system.test.iml" />
     </modules>
   </component>
 </project>

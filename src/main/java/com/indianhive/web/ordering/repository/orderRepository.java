@@ -17,9 +17,6 @@ public interface orderRepository extends JpaRepository<orderEntity, Long>  {
     // Find orders by user ID
     List<orderEntity> findByUserId(Long userId);
 
-    // Find orders by dish ID
-    List<orderEntity> findByDishId(Long dishId);
-
     // Find orders by status
     List<orderEntity> findByStatus(String status);
 
@@ -56,8 +53,5 @@ public interface orderRepository extends JpaRepository<orderEntity, Long>  {
 
     // Count orders by user ID
     Long countByUserId(Long userId);
-
-    // Check if an order exists by user ID and dish ID
-    boolean existsByUserIdAndDishId(Long userId, Long dishId);
 
 }
